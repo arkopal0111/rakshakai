@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rakshak-deployment
+  labels:
+    app: rakshak
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: rakshak
+  template:
+    metadata:
+      labels:
+        app: rakshak
+    spec:
+      containers:
+      - name: rakshak-container
+        image: your-docker-image:latest
+        ports:
+        - containerPort: 8501
+        env:
+        - name: STREAMLIT_SERVER_PORT
+          value: "8501"
+        - name: STREAMLIT_SERVER_ENABLE_CORS
+          value: "false"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+      imagePullSecrets:
+      - name: your-image-pull-secret
